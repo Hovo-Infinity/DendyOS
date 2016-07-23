@@ -1,37 +1,72 @@
-    OBJECTS = loader.o kmain.o
-    CC = gcc
-    CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
-             -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
-    LDFLAGS = -T link.ld -melf_i386
-    AS = nasm
-    ASFLAGS = -f elf
+#################################
+#####   Dendy OS makefile   #####
+#####   David Hovhannisyan  #####
+#################################
 
-    all: kernel.elf
 
-    kernel.elf: $(OBJECTS)
-		ld $(LDFLAGS) $(OBJECTS) -o kernel.elf
+#################################
+#####   Source dependencies #####
+#################################
+KERNEL_DIR = kernel
+KERNEL_ASM_DIR = asm
+KERNEL_C_DIR = c
+KERNEL_ASM := $(addprefix $(KERNEL_DIR)/$(KERNEL_ASM_DIR)/, loader.o)
+KERNEL_C := $(addprefix $(KERNEL_DIR)/$(KERNEL_C_DIR)/, kmain.o)
+KERNEL_EXEC := $(addprefix $(KERNEL_DIR)/, kernel.elf)
 
-    os.iso: kernel.elf
-		cp kernel.elf iso/boot/kernel.elf
-		genisoimage -R                              \
-					-b boot/grub/stage2_eltorito    \
-					-no-emul-boot                   \
-					-boot-load-size 4               \
-					-A os                           \
-					-input-charset utf8             \
-					-quiet                          \
-					-boot-info-table                \
-					-o os.iso                       \
-					iso
+GDT_DIR = gdt
+GDT := $(addprefix $(GDT_DIR)/, gdt.o)
 
-    run: os.iso
-		bochs -f bochsrc.txt -q
+BOCHS_DIR = bochs
+BOCHS_SRC := $(addprefix $(BOCHS_DIR)/, bochsrc.txt)
 
-    %.o: %.c
-		$(CC) $(CFLAGS)  $< -o $@
+#################################
+#####   C language compiler #####
+CC = gcc
+CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
+         -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+###################################
 
-    %.o: %.s
-		$(AS) $(ASFLAGS) $< -o $@
 
-    clean:
-		rm -rf *.o kernel.elf os.iso
+#####   objects linker   #####
+LINKER_DIR = linker
+LINKER := $(addprefix $(LINKER_DIR)/, link.ld)
+
+
+LDFLAGS = -T $(LINKER) -melf_i386
+##############################
+
+#####   x86 assembly compiler   #####
+AS = nasm
+ASFLAGS = -f elf
+#####################################
+
+all: $(KERNEL_EXEC)
+
+$(KERNEL_EXEC): $(KERNEL_ASM) $(KERNEL_C) $(GDT)
+	ld $(LDFLAGS) $(KERNEL_ASM) $(KERNEL_C) $(GDT) -o $(KERNEL_EXEC)
+
+dendy_os.iso: $(KERNEL_EXEC)
+	cp $(KERNEL_EXEC) iso/boot/kernel.elf
+	genisoimage -R                              \
+				-b boot/grub/stage2_eltorito    \
+				-no-emul-boot                   \
+				-boot-load-size 4               \
+				-A dendy_os                     \
+				-input-charset utf8             \
+				-quiet                          \
+				-boot-info-table                \
+				-o dendy_os.iso                 \
+				iso
+
+run: dendy_os.iso
+	bochs -f $(BOCHS_SRC) -q
+
+$%.o: %.c
+	$(CC) $(CFLAGS)  $< -o $@
+
+%.o: %.s
+	$(AS) $(ASFLAGS) $< -o $@
+
+clean:
+	rm -rf $(KERNEL_ASM) $(KERNEL_C) $(KERNEL_EXEC)
