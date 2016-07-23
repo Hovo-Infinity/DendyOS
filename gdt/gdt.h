@@ -30,8 +30,9 @@ struct gdt_ptr
 } __attribute__((packed));
 
 /* Our GDT, with 3 entries, and finally our special GDT pointer */
-struct gdt_entry gdt[3];
-struct gdt_ptr gp;
+struct gdt_entry gdt[3] __attribute__((aligned(0x1000)));
+struct gdt_ptr gp __attribute__((aligned(0x10)));
+
 
 /* This will be a function in start.asm. We use this to properly
 *  reload the new segment registers */
