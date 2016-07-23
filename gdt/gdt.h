@@ -1,10 +1,7 @@
 #ifndef GDT_H
 #define GDT_H
 
-/* global data structures */
-typedef unsigned int dword;
-typedef unsigned short word;
-typedef unsigned char byte;
+#include "../utility/utility.h"
 
 /* Defines a GDT entry. We say packed, because it prevents the
 *  compiler from doing things that it thinks is best: Prevent

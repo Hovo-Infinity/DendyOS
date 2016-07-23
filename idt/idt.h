@@ -3,11 +3,6 @@
 
 #include "../utility/utility.h"
 
-/* global data structures */
-typedef unsigned int dword;
-typedef unsigned short word;
-typedef unsigned char byte;
-
 /* Defines an IDT entry */
 struct idt_entry
 {
