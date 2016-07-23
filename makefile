@@ -14,8 +14,14 @@ KERNEL_ASM := $(addprefix $(KERNEL_DIR)/$(KERNEL_ASM_DIR)/, loader.o)
 KERNEL_C := $(addprefix $(KERNEL_DIR)/$(KERNEL_C_DIR)/, kmain.o)
 KERNEL_EXEC := $(addprefix $(KERNEL_DIR)/, kernel.elf)
 
+UTILITY_DIR = utility
+UTILITY := $(addprefix $(UTILITY_DIR)/, utility.o)
+
 GDT_DIR = gdt
 GDT := $(addprefix $(GDT_DIR)/, gdt.o)
+
+IDT_DIR = idt
+IDT := $(addprefix $(IDT_DIR)/, idt.o)
 
 BOCHS_DIR = bochs
 BOCHS_SRC := $(addprefix $(BOCHS_DIR)/, bochsrc.txt)
@@ -43,8 +49,8 @@ ASFLAGS = -f elf
 
 all: $(KERNEL_EXEC)
 
-$(KERNEL_EXEC): $(KERNEL_ASM) $(KERNEL_C) $(GDT)
-	ld $(LDFLAGS) $(KERNEL_ASM) $(KERNEL_C) $(GDT) -o $(KERNEL_EXEC)
+$(KERNEL_EXEC): $(UTILITY) $(KERNEL_ASM) $(KERNEL_C) $(GDT) $(IDT)
+	ld $(LDFLAGS) $(UTILITY) $(KERNEL_ASM) $(KERNEL_C) $(GDT) $(IDT)  -o $(KERNEL_EXEC)
 
 dendy_os.iso: $(KERNEL_EXEC)
 	cp $(KERNEL_EXEC) iso/boot/kernel.elf

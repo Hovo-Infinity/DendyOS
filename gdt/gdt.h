@@ -1,8 +1,6 @@
 #ifndef GDT_H
 #define GDT_H
 
-//#include < system.h >
-
 /* global data structures */
 typedef unsigned int dword;
 typedef unsigned short word;

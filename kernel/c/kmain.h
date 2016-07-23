@@ -2,7 +2,9 @@
 #define KMAIN_H
 
 /* Additional dependencies */
+#include "../../utility/utility.h"
 #include "../../gdt/gdt.h"
+#include "../../idt/idt.h"
 
 /*  Constants and magic numbers */
 #define CONSOLE_WIDTH	85
@@ -43,10 +45,6 @@ inline void fb_write_cell(unsigned int location, char character, unsigned char f
 void clear_screen(void);
 
 void print(const char *stringToWrite);
-
-unsigned int strlen(const char *stringGiven);
-
-void itoa(unsigned int integerPassed, unsigned int baseSystem, char *outputBuffer);
 
 /* The kernel starts executing here */
 int kmain(int arg1, int arg2, int arg3);

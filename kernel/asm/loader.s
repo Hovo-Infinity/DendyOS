@@ -26,11 +26,11 @@ loader: ;proc                   ; the loader label (defined as entry point in li
     extern clear_screen
     call clear_screen
 
-    extern kmain           ; the function sum_of_three is defined elsewhere
-    push 3            ; arg3
+    extern kmain            ; the function sum_of_three is defined elsewhere
+    push 3                  ; arg3
     push 2
     push 1
-    call kmain       ; call the function, the result will be in eax
+    call kmain              ; call the function, the result will be in eax
 .loop:
     jmp .loop                   ; loop forever
 ;loader endp
@@ -63,3 +63,11 @@ gdt_flush:
     jmp 0x08:flush2   ; 0x08 is the offset to our code segment: Far jump!
 flush2:
     ret               ; Returns back to the C code!
+
+; Loads the IDT defined in 'idtp' into the processor.
+; This is declared in C as 'extern void idt_load();'
+global idt_load
+extern idtp
+idt_load:
+    lidt [idtp]
+    ret
