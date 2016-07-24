@@ -1,6 +1,5 @@
 #################################
 #####   Dendy OS makefile   #####
-#####   David Hovhannisyan  #####
 #################################
 
 
@@ -17,6 +16,9 @@ KERNEL_EXEC := $(addprefix $(KERNEL_DIR)/, kernel.elf)
 UTILITY_DIR = utility
 UTILITY := $(addprefix $(UTILITY_DIR)/, utility.o)
 
+CONSOLE_DIR = console
+CONSOLE := $(addprefix $(CONSOLE_DIR)/, console.o)
+
 GDT_DIR = gdt
 GDT := $(addprefix $(GDT_DIR)/, gdt.o)
 
@@ -26,6 +28,13 @@ IDT := $(addprefix $(IDT_DIR)/, idt.o)
 BOCHS_DIR = bochs
 BOCHS_SRC := $(addprefix $(BOCHS_DIR)/, bochsrc.txt)
 
+
+KERNEL_ARGS := $(UTILITY)     \
+				$(CONSOLE)    \
+				$(KERNEL_ASM) \
+				$(KERNEL_C)   \
+				$(GDT) $(IDT)
+
 #################################
 #####   C language compiler #####
 CC = gcc
@@ -33,7 +42,13 @@ CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
          -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
 ###################################
 
+#####################################
+#####   x86 assembly compiler   #####
+AS = nasm
+ASFLAGS = -f elf
+#####################################
 
+##############################
 #####   objects linker   #####
 LINKER_DIR = linker
 LINKER := $(addprefix $(LINKER_DIR)/, link.ld)
@@ -42,15 +57,10 @@ LINKER := $(addprefix $(LINKER_DIR)/, link.ld)
 LDFLAGS = -T $(LINKER) -melf_i386
 ##############################
 
-#####   x86 assembly compiler   #####
-AS = nasm
-ASFLAGS = -f elf
-#####################################
-
 all: $(KERNEL_EXEC)
 
-$(KERNEL_EXEC): $(UTILITY) $(KERNEL_ASM) $(KERNEL_C) $(GDT) $(IDT)
-	ld $(LDFLAGS) $(UTILITY) $(KERNEL_ASM) $(KERNEL_C) $(GDT) $(IDT)  -o $(KERNEL_EXEC)
+$(KERNEL_EXEC): $(KERNEL_ARGS)
+	ld $(LDFLAGS) $(KERNEL_ARGS) -o $(KERNEL_EXEC)
 
 dendy_os.iso: $(KERNEL_EXEC)
 	cp $(KERNEL_EXEC) iso/boot/kernel.elf
@@ -75,4 +85,4 @@ $%.o: %.c
 	$(AS) $(ASFLAGS) $< -o $@
 
 clean:
-	rm -rf $(KERNEL_ASM) $(KERNEL_C) $(KERNEL_EXEC)
+	rm -rf $(KERNEL_ARGS) $(KERNEL_EXEC)

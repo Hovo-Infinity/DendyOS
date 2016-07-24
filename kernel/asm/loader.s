@@ -19,19 +19,16 @@ align 4                         ; the code must be 4 byte aligned
     dd FLAGS                    ; the flags,
     dd CHECKSUM                 ; and the checksum
 
-loader: ;proc                   ; the loader label (defined as entry point in linker script)
+loader:                         ; the loader label (defined as entry point in linker script)
     mov esp, kernel_stack + KERNEL_STACK_SIZE   ; point esp to the start of the
                                                 ; stack (end of memory area)
-
     extern clear_screen
     call clear_screen
-
     extern kmain            ; the function sum_of_three is defined elsewhere
-    push 3                  ; arg3
-    push 2
-    push 1
     call kmain              ; call the function, the result will be in eax
+    cli
 .loop:
+    hlt
     jmp .loop                   ; loop forever
 ;loader endp
 
@@ -45,6 +42,7 @@ outb:
     mov dx, [esp + 4]    ; move the address of the I/O port into the dx register
     out dx, al           ; send the data to the I/O port
     ret                  ; return to the calling function
+;outb endp
 
 ; This will set up our new segment registers. We need to do
 ; something special in order to set CS. We do what is called a
@@ -60,8 +58,8 @@ gdt_flush:
     mov fs, ax
     mov gs, ax
     mov ss, ax
-    jmp 0x08:flush2   ; 0x08 is the offset to our code segment: Far jump!
-flush2:
+    jmp 0x08:flush_cs   ; 0x08 is the offset to our code segment: Far jump!
+flush_cs:
     ret               ; Returns back to the C code!
 
 ; Loads the IDT defined in 'idtp' into the processor.

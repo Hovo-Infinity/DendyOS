@@ -29,11 +29,11 @@ struct gdt_entry gdt[3] __attribute__((aligned(0x1000)));
 struct gdt_ptr gp __attribute__((aligned(0x10)));
 
 
-/* This will be a function in start.asm. We use this to properly
+/* This will be a function in loader.s. We use this to properly
 *  reload the new segment registers */
 extern void gdt_flush();
 
 /* use this function in your code */
 void gdt_install();
 
-#endif
+#endif /* GDT_H */

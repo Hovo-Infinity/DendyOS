@@ -1,8 +1,11 @@
 #include "gdt.h"
 
 /* Setup a descriptor in the Global Descriptor Table */
-void gdt_set_gate(int num, unsigned long base, unsigned long limit,
-                           unsigned char access, unsigned char gran)
+void gdt_set_gate(int num
+                , unsigned long base
+                , unsigned long limit
+                , unsigned char access
+                , unsigned char gran)
 {
     /* Setup the descriptor base address */
     gdt[num].base_low = (base & 0xFFFF);

@@ -2,15 +2,16 @@
 #define IDT_H
 
 #include "../utility/utility.h"
+#include "../console/console.h"
 
 /* Defines an IDT entry */
 struct idt_entry
 {
-    word base_lo;
-    word sel;        /* Our kernel segment goes here! */
-    byte always0;     /* This will ALWAYS be set to 0! */
-    byte flags;       /* Set using the above table! */
-    word base_hi;
+    word offset_lo;
+    word sel;			/* Our kernel segment goes here! */
+    byte always0;		/* This will ALWAYS be set to 0! */
+    byte flags;			/* Set using the above table! */
+    word offset_hi;
 } __attribute__((packed));
 
 struct idt_ptr
@@ -34,4 +35,4 @@ extern void idt_load();
 /* main usage */
 void idt_install();
 
-#endif
+#endif /* IDT_H */

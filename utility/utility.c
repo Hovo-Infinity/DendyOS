@@ -19,7 +19,7 @@ void memset(unsigned char *address, unsigned char symbol, unsigned long size)
 void itoa(unsigned int integerPassed, unsigned int baseSystem, char *outputBuffer)
 {
     const char digits[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    unsigned int maxIntegerLength = 10;
+    unsigned int maxIntegerLength = 8;
     
     char *ptr = outputBuffer;
 
