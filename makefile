@@ -52,8 +52,6 @@ ASFLAGS = -f elf
 #####   objects linker   #####
 LINKER_DIR = linker
 LINKER := $(addprefix $(LINKER_DIR)/, link.ld)
-
-
 LDFLAGS = -T $(LINKER) -melf_i386
 ##############################
 

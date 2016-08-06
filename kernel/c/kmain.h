@@ -9,6 +9,7 @@
 
 
 char HelloMsg[] = "Hello World!";
+char buffer[200];
 
 
 /* The kernel starts executing here */

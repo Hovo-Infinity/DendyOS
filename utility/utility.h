@@ -10,6 +10,7 @@ typedef unsigned char byte;
 /* mainly write your utility functions here */
 unsigned int strlen(const char *stringGiven);
 void memset(unsigned char *address, unsigned char symbol, unsigned long size);
-void itoa(unsigned int integerPassed, unsigned int baseSystem, char *outputBuffer);
+void hextochar(char *pIn, char *pOut, int pLen);
+void chartohex(char *pIn,char *pOut,int pLen);
 
 #endif

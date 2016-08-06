@@ -36,6 +36,7 @@ void clear_screen(void);
 
 void print(const char *stringToWrite);
 
+void nextcell();
 void newline();
 
 

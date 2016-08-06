@@ -17,32 +17,11 @@ void idt_set_gate(unsigned char num
 
     /* Setup defaults */
     idt[num].always0 = 0x00;
-
 }
 
-void handler_0( dword error_code
-                , dword eip)
+void handler_0()
 {
-    __asm__("cli");
-    char error_code_str[10];
-    char eip_str[10];
 
-    itoa(error_code, 16, error_code_str);
-
-    itoa(eip, 16, eip_str);
-    print(eip_str);
-    newline();
-
-/*
-    itoa(eip, 16, eip_str);
-    print(eip_str);
-
-    itoa(cs, 16, cs_str);
-    print(cs_str);
-
-    itoa(eflags, 16, eflags_str);
-    print(eflags_str);
-    */
 }
 
 

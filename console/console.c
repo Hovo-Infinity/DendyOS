@@ -2,7 +2,8 @@
 
 /*	Global Variables*/
 char *framebuffer = (char *) 0x000B8000;
-int fb_iterator = 0;
+int current_col = 0;
+int current_line = 0;
 
 inline void fb_write_cell(unsigned int location
 	, char character
@@ -25,9 +26,23 @@ void clear_screen()
     }
 }
 
+void nextcell()
+{
+    ++current_col;
+    if (current_col == CONSOLE_WIDTH - 1)
+    {
+        newline();
+    }
+}
+
 void newline()
 {
-    fb_iterator += CONSOLE_HEIGHT;
+    current_col = 0;
+    ++current_line;
+    if (current_line == CONSOLE_HEIGHT - 1)
+    {
+        current_line = 0;
+    }
 }
 
 void print(const char *stringToWrite)
@@ -35,9 +50,9 @@ void print(const char *stringToWrite)
     int i;
     for ( i = 0
     	; stringToWrite[i] != '\0'
-    	; ++i, ++fb_iterator )
+        ; ++i, nextcell() )
     {
-        fb_write_cell(FBCHAR_SIZE * fb_iterator
+        fb_write_cell(FBCHAR_SIZE * ( current_col + CONSOLE_WIDTH * current_line )
         	, stringToWrite[i]
         	, FB_BLACK
         	, FB_LIGHT_GREEN);
