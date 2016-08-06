@@ -20,4 +20,5 @@ HEADERS += \
     utility/utility.h
 
 DISTFILES += \
-    makefile
+    makefile \
+    kernel/asm/loader.s
