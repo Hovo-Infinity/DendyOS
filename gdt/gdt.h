@@ -12,7 +12,7 @@ struct gdt_entry
   word base_low;
   byte base_middle;
   byte access;
-  byte granularity;
+  byte attributes;
   byte base_high;
 } __attribute__((packed));
 

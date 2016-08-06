@@ -19,11 +19,20 @@ void idt_set_gate(unsigned char num
   idt[num].always0 = 0x00;
 }
 
-void handler_0()
+void interrupt_handler(struct cpu_state cpu, unsigned int interrupt, struct stack_state stack)
 {
-
+  switch (interrupt)
+    {
+    case 0:
+      division_by_zero_handler();
+      break;
+    case 3:
+      breakpoint_interrupt_handler();
+      break;
+    }
+  eax_shit = cpu.eax;
+  cs_shit = stack.cs;
 }
-
 
 /* Installs the IDT */
 void idt_install()
@@ -37,6 +46,7 @@ void idt_install()
 
   /* Add any new ISRs to the IDT here using idt_set_gate */
   idt_set_gate(0, (dword)&handler_0, 0x08, 0xEE);
+  idt_set_gate(3, (dword)&handler_3, 0x08, 0xEE);
 
   /* Points the processor's internal register to the new IDT */
   idt_load();

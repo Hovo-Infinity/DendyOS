@@ -24,16 +24,18 @@ GDT := $(addprefix $(GDT_DIR)/, gdt.o)
 
 IDT_DIR = idt
 IDT := $(addprefix $(IDT_DIR)/, idt.o)
+HANDLERS := $(addprefix $(IDT_DIR)/, handlers.o)
+
+KERNEL_ARGS :=                  $(UTILITY)      \
+                                $(CONSOLE)      \
+                                $(GDT)          \
+                                $(HANDLERS)     \
+                                $(IDT)          \
+                                $(KERNEL_ASM)   \
+                                $(KERNEL_C)     \
 
 BOCHS_DIR = bochs
 BOCHS_SRC := $(addprefix $(BOCHS_DIR)/, bochsrc.txt)
-
-
-KERNEL_ARGS := $(UTILITY)     \
-				$(CONSOLE)    \
-				$(KERNEL_ASM) \
-				$(KERNEL_C)   \
-				$(GDT) $(IDT)
 
 #################################
 #####   C language compiler #####

@@ -129,15 +129,14 @@ void put_char(word c)
 }
 
 /* Uses the above routine to output a string... */
-void put_str(byte *text)
+void put_str(char *text)
 {
-  unsigned int i;
-  for (i = 0; i < strlen(text); i++)
-    put_char(text[i]);
+  while(*text)
+    put_char(*text++);
 }
 
 /* Sets the forecolor and backcolor that we will use */
-void set_text_color(byte forecolor, byte backcolor)
+void set_text_color(enum fb_Color forecolor, enum fb_Color backcolor)
 {
   /* Top 4 bytes are the background, bottom 4 bytes
     *  are the foreground color */

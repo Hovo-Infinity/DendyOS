@@ -38,7 +38,7 @@ void clear_screen(void);
 void move_csr(void);
 void scroll(void);
 void put_char(word c);
-void put_str(byte *text);
-void set_text_color(byte forecolor, byte backcolor);
+void put_str(char *text);
+void set_text_color(enum fb_Color forecolor, enum fb_Color backcolor);
 
 #endif /* CONSOLE_H */
