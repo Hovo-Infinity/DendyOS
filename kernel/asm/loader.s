@@ -1,10 +1,30 @@
+; kernel start
 global loader                   ; the entry symbol for ELF
 
+; constants
 MAGIC_NUMBER equ 0x1BADB002     ; define the magic number constant
 FLAGS        equ 0x0            ; multiboot flags
 CHECKSUM     equ -MAGIC_NUMBER  ; calculate the checksum
                                 ; (magic number + checksum + flags should equal 0)
 KERNEL_STACK_SIZE equ 4096      ; size of stack in bytes
+
+; macros
+%macro no_error_code_interrupt_handler 1
+global interrupt_handler_%1
+interrupt_handler_%1:
+    cli
+    push    dword 0                     ; push 0 as error code
+    push    dword %1                    ; push the interrupt number
+    jmp     common_interrupt_handler    ; jump to the common handler
+%endmacro
+
+%macro error_code_interrupt_handler 1
+global interrupt_handler_%1
+interrupt_handler_%1:
+    cli
+    push    dword %1                    ; push the interrupt number
+    jmp     common_interrupt_handler    ; jump to the common handler
+%endmacro
 
 
 section .bss
@@ -69,3 +89,39 @@ extern idtp
 idt_load:
     lidt [idtp]
     ret
+
+common_interrupt_handler:               ; the common parts of the generic interrupt handler
+; save the registers
+push eax
+push ecx
+push edx
+push ebx
+push esp
+push ebp
+push esi
+push edi
+; call the C function
+extern interrupt_handler
+call    interrupt_handler
+; restore the registers
+pop edi
+pop esi
+pop ebp
+pop esp
+pop ebx
+pop edx
+pop ecx
+pop eax
+; restore the esp
+add     esp, 8
+sti
+; return to the code that got interrupted
+iret
+
+global handler_0
+handler_0:
+no_error_code_interrupt_handler 0       ; create handler for interrupt 0
+
+global handler_3
+handler_3:
+no_error_code_interrupt_handler 3       ; create handler for interrupt 3

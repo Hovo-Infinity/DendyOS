@@ -9,7 +9,8 @@ SOURCES += \
     idt/idt.c \
     io/io.c \
     kernel/c/kmain.c \
-    utility/utility.c
+    utility/utility.c \
+    idt/handlers.c
 
 HEADERS += \
     console/console.h \
@@ -17,7 +18,8 @@ HEADERS += \
     idt/idt.h \
     io/io.h \
     kernel/c/kmain.h \
-    utility/utility.h
+    utility/utility.h \
+    idt/handlers.h
 
 DISTFILES += \
     makefile \
