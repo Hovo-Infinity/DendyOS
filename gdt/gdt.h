@@ -8,20 +8,20 @@
 *  compiler "optimization" by packing */
 struct gdt_entry
 {
-	word limit_low;
-	word base_low;
-	byte base_middle;
-	byte access;
-	byte granularity;
-	byte base_high;
+  word limit_low;
+  word base_low;
+  byte base_middle;
+  byte access;
+  byte granularity;
+  byte base_high;
 } __attribute__((packed));
 
 /* Special pointer which includes the limit: The max bytes
 *  taken up by the GDT, minus 1. Again, this NEEDS to be packed */
 struct gdt_ptr
 {
-	word limit;
-	dword base;
+  word limit;
+  dword base;
 } __attribute__((packed));
 
 /* Our GDT, with 3 entries, and finally our special GDT pointer */
