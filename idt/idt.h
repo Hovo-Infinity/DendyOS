@@ -7,17 +7,17 @@
 /* Defines an IDT entry */
 struct idt_entry
 {
-    word offset_lo;
-    word sel;			/* Our kernel segment goes here! */
-    byte always0;		/* This will ALWAYS be set to 0! */
-    byte flags;			/* Set using the above table! */
-    word offset_hi;
+  word offset_lo;
+  word sel;			/* Our kernel segment goes here! */
+  byte always0;		/* This will ALWAYS be set to 0! */
+  byte flags;			/* Set using the above table! */
+  word offset_hi;
 } __attribute__((packed));
 
 struct idt_ptr
 {
-    word limit;
-    dword base;
+  word limit;
+  dword base;
 } __attribute__((packed));
 
 /* Declare an IDT of 256 entries. Although we will only use the

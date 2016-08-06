@@ -2,13 +2,11 @@
 
 void kmain()
 {
-	int x = 5;
-	int y = 0;
+  /*int x = 5, y = 0;*/
 
-    gdt_install();
-    idt_install();
-    
-    /*print(HelloMsg);*/
 
-    x /= y;
+  gdt_install();
+  idt_install();
+
+  put_str((byte*)HelloMsg);
 }
