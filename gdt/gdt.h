@@ -6,8 +6,7 @@
 /* Defines a GDT entry. We say packed, because it prevents the
 *  compiler from doing things that it thinks is best: Prevent
 *  compiler "optimization" by packing */
-struct gdt_entry
-{
+struct gdt_entry {
   word limit_low;
   word base_low;
   byte base_middle;
@@ -18,8 +17,7 @@ struct gdt_entry
 
 /* Special pointer which includes the limit: The max bytes
 *  taken up by the GDT, minus 1. Again, this NEEDS to be packed */
-struct gdt_ptr
-{
+struct gdt_ptr {
   word limit;
   dword base;
 } __attribute__((packed));

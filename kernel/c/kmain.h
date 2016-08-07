@@ -7,10 +7,7 @@
 #include "../../gdt/gdt.h"
 #include "../../idt/idt.h"
 
-
-char HelloMsg[] = "Hello World!";
-char buffer[200];
-
+char HelloMsg[] = "Hello World!\n\r";
 
 /* The kernel starts executing here */
 void kmain();
