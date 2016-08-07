@@ -5,7 +5,6 @@
 
 #################################
 #####   Source dependencies #####
-#################################
 KERNEL_DIR = kernel
 KERNEL_ASM_DIR = asm
 KERNEL_C_DIR = c
@@ -24,16 +23,19 @@ GDT := $(addprefix $(GDT_DIR)/, gdt.o)
 
 IDT_DIR = idt
 IDT := $(addprefix $(IDT_DIR)/, idt.o)
+HANDLERS := $(addprefix $(IDT_DIR)/, handlers.o)
+
+KERNEL_ARGS :=                  $(UTILITY)      \
+                                $(CONSOLE)      \
+                                $(GDT)          \
+                                $(HANDLERS)     \
+                                $(IDT)          \
+                                $(KERNEL_ASM)   \
+                                $(KERNEL_C)     \
 
 BOCHS_DIR = bochs
 BOCHS_SRC := $(addprefix $(BOCHS_DIR)/, bochsrc.txt)
-
-
-KERNEL_ARGS := $(UTILITY)     \
-				$(CONSOLE)    \
-				$(KERNEL_ASM) \
-				$(KERNEL_C)   \
-				$(GDT) $(IDT)
+#################################
 
 #################################
 #####   C language compiler #####
@@ -63,15 +65,15 @@ $(KERNEL_EXEC): $(KERNEL_ARGS)
 dendy_os.iso: $(KERNEL_EXEC)
 	cp $(KERNEL_EXEC) iso/boot/kernel.elf
 	genisoimage -R                              \
-				-b boot/grub/stage2_eltorito    \
-				-no-emul-boot                   \
-				-boot-load-size 4               \
-				-A dendy_os                     \
-				-input-charset utf8             \
-				-quiet                          \
-				-boot-info-table                \
-				-o dendy_os.iso                 \
-				iso
+                    -b boot/grub/stage2_eltorito    \
+                    -no-emul-boot                   \
+                    -boot-load-size 4               \
+                    -A dendy_os                     \
+                    -input-charset utf8             \
+                    -quiet                          \
+                    -boot-info-table                \
+                    -o dendy_os.iso                 \
+                    iso
 
 run: dendy_os.iso
 	bochs -f $(BOCHS_SRC) -q

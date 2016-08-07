@@ -35,17 +35,21 @@ void scroll(void)
   blank = 0x20 | (attrib << 8);
 
   /* Row 25 is the end, this means we need to scroll up */
-  if(csr_y >= 25)
+  if(csr_y >= CONSOLE_HEIGHT)
     {
       /* Move the current text chunk that makes up the screen
         *  back in the buffer by a line */
-      temp = csr_y - 25 + 1;
-      memcpy (framebuffer, framebuffer + temp * 80, (25 - temp) * 80 * 2);
+      temp = csr_y - CONSOLE_HEIGHT + 1;
+      memcpy (framebuffer
+              , framebuffer + temp * CONSOLE_WIDTH
+              , (CONSOLE_HEIGHT - temp) * CONSOLE_WIDTH * 2);
 
       /* Finally, we set the chunk of memory that occupies
         *  the last line of text to our 'blank' character */
-      memset (framebuffer + (25 - temp) * 80, blank, 80);
-      csr_y = 25 - 1;
+      memset (framebuffer + (CONSOLE_HEIGHT - temp) * CONSOLE_WIDTH
+              , blank
+              , CONSOLE_WIDTH);
+      csr_y = CONSOLE_HEIGHT - 1;
     }
 }
 
@@ -58,7 +62,7 @@ void move_csr(void)
   /* The equation for finding the index in a linear
     *  chunk of memory can be represented by:
     *  Index = [(y * width) + x] */
-  temp = csr_y * 80 + csr_x;
+  temp = csr_y * CONSOLE_WIDTH + csr_x;
 
   /* This sends a command to indicies 14 and 15 in the
     *  CRT Control Register of the VGA controller. These
@@ -129,15 +133,14 @@ void put_char(word c)
 }
 
 /* Uses the above routine to output a string... */
-void put_str(byte *text)
+void put_str(char *text)
 {
-  unsigned int i;
-  for (i = 0; i < strlen(text); i++)
-    put_char(text[i]);
+  while(*text)
+    put_char(*text++);
 }
 
 /* Sets the forecolor and backcolor that we will use */
-void set_text_color(byte forecolor, byte backcolor)
+void set_text_color(enum fb_Color forecolor, enum fb_Color backcolor)
 {
   /* Top 4 bytes are the background, bottom 4 bytes
     *  are the foreground color */
