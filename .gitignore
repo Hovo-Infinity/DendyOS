@@ -66,6 +66,9 @@ Thumbs.db
 # Python byte code
 *.pyc
 
+# Bochs generated logs
+bochslog.txt
+
 # Binaries
 # --------
 *.dll
