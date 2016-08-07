@@ -10,9 +10,9 @@
 struct idt_entry
 {
   word offset_lo;
-  word sel;			/* Our kernel segment goes here! */
-  byte always0;		/* This will ALWAYS be set to 0! */
-  byte flags;			/* Set using the above table! */
+  word sel;                     /* Our kernel segment goes here! */
+  byte always0;                 /* This will ALWAYS be set to 0! */
+  byte flags;                   /* Set using the above table! */
   word offset_hi;
 } __attribute__((packed));
 
@@ -40,7 +40,9 @@ struct stack_state {
   unsigned int eflags;
 } __attribute__((packed));
 
-void interrupt_handler(struct cpu_state cpu, unsigned int interrupt, struct stack_state stack);
+void interrupt_handler(struct cpu_state cpu
+                       , unsigned int interrupt
+                       , struct stack_state stack);
 
 /* Declare an IDT of 256 entries. Although we will only use the
 *  first 32 entries in this tutorial, the rest exists as a bit
@@ -51,16 +53,35 @@ void interrupt_handler(struct cpu_state cpu, unsigned int interrupt, struct stac
 struct idt_entry idt[256] __attribute__((aligned(0x1000)));
 struct idt_ptr idtp __attribute__((aligned(0x10)));
 
-/* This exists in 'start.asm', and is used to load our IDT */
+/* This exists in 'loader.asm', and is used to load our IDT */
 extern void idt_load();
 extern void handler_0();
+extern void handler_1();
+extern void handler_2();
 extern void handler_3();
+extern void handler_4();
+extern void handler_5();
+extern void handler_6();
+extern void handler_7();
+extern void handler_8();
+extern void handler_9();
+extern void handler_10();
+extern void handler_11();
+extern void handler_12();
+extern void handler_13();
+extern void handler_14();
+extern void handler_15();
+extern void handler_16();
+extern void handler_17();
+extern void handler_18();
+extern void handler_19();
+extern void handler_20();
 
 /* main usage */
 void idt_install();
 
 /* for special needs */
-dword eax_shit;
-dword cs_shit;
+dword eax_;
+dword cs_;
 
 #endif /* IDT_H */

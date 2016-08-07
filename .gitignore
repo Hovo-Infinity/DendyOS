@@ -12,6 +12,7 @@
 *.rej
 *.so
 *.so.*
+*.iso
 *_pch.h.cpp
 *_resource.rc
 *.qm
@@ -69,5 +70,5 @@ Thumbs.db
 # --------
 *.dll
 *.exe
-
+*.elf
 
