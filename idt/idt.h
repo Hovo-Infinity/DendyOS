@@ -45,11 +45,11 @@ void interrupt_handler(struct cpu_state cpu
                        , struct stack_state stack);
 
 /* Declare an IDT of 256 entries. Although we will only use the
-*  first 32 entries in this tutorial, the rest exists as a bit
-*  of a trap. If any undefined IDT entry is hit, it normally
-*  will cause an "Unhandled Interrupt" exception. Any descriptor
-*  for which the 'presence' bit is cleared (0) will generate an
-*  "Unhandled Interrupt" exception */
+*  first 32 entries here, the rest exists as a bit of a trap.
+*  If any undefined IDT entry is hit, it normally will cause an
+*  "Unhandled Interrupt" exception. Any descriptor for which
+*  the 'presence' bit is cleared (0) will generate an "Unhandled
+*  Interrupt" exception */
 struct idt_entry idt[256] __attribute__((aligned(0x1000)));
 struct idt_ptr idtp __attribute__((aligned(0x10)));
 
