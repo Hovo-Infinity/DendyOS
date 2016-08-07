@@ -10,7 +10,8 @@ SOURCES += \
     io/io.c \
     kernel/c/kmain.c \
     utility/utility.c \
-    idt/handlers.c
+    idt/handlers.c \
+    console/log.c
 
 HEADERS += \
     console/console.h \
@@ -19,8 +20,10 @@ HEADERS += \
     io/io.h \
     kernel/c/kmain.h \
     utility/utility.h \
-    idt/handlers.h
+    idt/handlers.h \
+    console/log.h
 
 DISTFILES += \
     makefile \
-    kernel/asm/loader.s
+    kernel/asm/loader.s \
+    linker/link.ld

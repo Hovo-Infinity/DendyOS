@@ -15,8 +15,12 @@ KERNEL_EXEC := $(addprefix $(KERNEL_DIR)/, kernel.elf)
 UTILITY_DIR = utility
 UTILITY := $(addprefix $(UTILITY_DIR)/, utility.o)
 
+IO_DIR = io
+IO := $(addprefix $(IO_DIR)/, io.o)
+
 CONSOLE_DIR = console
 CONSOLE := $(addprefix $(CONSOLE_DIR)/, console.o)
+LOG := $(addprefix $(CONSOLE_DIR)/, log.o)
 
 GDT_DIR = gdt
 GDT := $(addprefix $(GDT_DIR)/, gdt.o)
@@ -26,7 +30,9 @@ IDT := $(addprefix $(IDT_DIR)/, idt.o)
 HANDLERS := $(addprefix $(IDT_DIR)/, handlers.o)
 
 KERNEL_ARGS :=                  $(UTILITY)      \
+                                $(IO)           \
                                 $(CONSOLE)      \
+                                $(LOG)          \
                                 $(GDT)          \
                                 $(HANDLERS)     \
                                 $(IDT)          \

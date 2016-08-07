@@ -2,8 +2,7 @@
 #define CONSOLE_H
 
 #include "../utility/utility.h"
-
-extern void outb(word port_num, byte arg);
+#include "../io/io.h"
 
 /*  Constants and magic numbers */
 #define CONSOLE_WIDTH	80
@@ -37,7 +36,7 @@ enum fb_Color {
 void clear_screen(void);
 void move_csr(void);
 void scroll(void);
-void put_char(word c);
+void put_char(unsigned char c);
 void put_str(char *text);
 void set_text_color(enum fb_Color forecolor, enum fb_Color backcolor);
 
